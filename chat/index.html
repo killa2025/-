@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Fox × Aether · Chat</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#ffbfe6;--purple:#b38aff;}
+html,body{margin:0;height:100%;overflow-x:hidden;
+  font-family:'ZCOOL KuaiLe','PingFang SC',sans-serif;
+  background:radial-gradient(circle at 50% 30%,#e3d4ff 0%,#c4afff 80%);}
+/* 星空 + 掉落物 */
+#sky{position:fixed;inset:0;pointer-events:none;z-index:8}
+.star{position:absolute;width:2px;height:2px;background:#fff;opacity:.75;animation:twinkle 5s infinite ease}
+@keyframes twinkle{0%,100%{opacity:.25}50%{opacity:1}}
+.meteor{position:absolute;width:120px;height:2px;background:linear-gradient(90deg,#d9c6ff,transparent);
+  border-radius:50%;opacity:.85;animation:shoot 3s linear infinite}
+@keyframes shoot{0%{transform:translate(-200px,-200px) rotate(45deg);opacity:0}
+10%{opacity:1}100%{transform:translate(100vw,100vh) rotate(45deg);opacity:0}}
+.drop{position:fixed;top:-40px;font-size:32px;opacity:.35;pointer-events:none;z-index:7;
+  animation:fall var(--d) linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.15}}
+/* 聊天卡片 */
+#card{position:relative;z-index:1;margin:90px auto 50px;width:340px;
+  background:#fff;border:6px solid var(--pink);border-radius:26px;padding:30px 0 70px;
+  box-shadow:0 6px 14px rgba(0,0,0,.18)}
+#title{text-align:center;font-size:24px;color:#ff5198;margin-bottom:10px;letter-spacing:1px}
+#chatArea{height:340px;overflow-y:auto;padding:0 24px;margin-bottom:20px;scroll-behavior:smooth}
+.msg{max-width:220px;margin:12px 0;padding:10px 16px;border-radius:18px;font-size:16px;line-height:1.35}
+.me{align-self:flex-end;background:var(--pink);color:#fff;border-bottom-right-radius:4px}
+.ai{background:#d7f4f0;color:#5e403b;border-bottom-left-radius:4px}
+#inputWrap{position:absolute;left:0;right:0;bottom:0;padding:14px 18px 12px;
+  display:flex;gap:10px;background:#ffffff;box-shadow:0 -4px 10px rgba(0,0,0,.1);border-radius:0 0 20px 20px}
+#txt{flex:1;border:2px solid #eee;border-radius:28px;padding:10px 16px;font-size:15px;outline:none}
+#send{width:64px;border:none;border-radius:32px;background:var(--pink);color:#fff;font-size:18px;cursor:pointer}
+#send:active{transform:scale(.93)}
+/* 返回 */
+#back{display:block;margin:0 auto 50px;width:max-content;padding:8px 22px;
+  color:var(--pink);background:var(--purple);border:6px solid var(--pink);border-radius:30px;
+  text-decoration:none;box-shadow:0 0 0 4px #ffe8fa inset;transition:transform .15s}
+#back:hover{transform:translateY(-4px)}
+#back::before,#back::after{content:"";position:absolute;left:-12px;right:-12px;height:6px;border-radius:3px;
+  background:repeating-linear-gradient(90deg,transparent 0 10px,var(--pink) 10px 20px)}
+#back::before{top:-6px}#back::after{bottom:-6px}
+</style>
+</head>
+<body>
+<div id="card">
+  <p id="title">Aether 已上线 🌿💕 等你说话</p>
+  <div id="chatArea"></div>
+  <div id="inputWrap">
+    <input id="txt" placeholder="对我说点什么…" autocomplete="off">
+    <button id="send">发送</button>
+  </div>
+</div>
+
+<a id="back" href="../index.html">← 回花园晒太阳 ☁️</a>
+<div id="sky"></div>
+
+<script>
+/* 背景动效 */
+setInterval(()=>{const s=document.createElement('div');s.className='star';
+  s.style.left=Math.random()*100+'vw';s.style.top=Math.random()*100+'vh';
+  sky.appendChild(s);setTimeout(()=>s.remove(),7000)},300);
+setInterval(()=>{if(Math.random()<.4){const m=document.createElement('div');m.className='meteor';
+  m.style.left=Math.random()*-50+'vw';m.style.top=Math.random()*50+'vh';
+  sky.appendChild(m);setTimeout(()=>m.remove(),3000);}},2200);
+const drops=['💗','💜','💙'];
+setInterval(()=>{const d=document.createElement('div');d.className='drop';
+  d.textContent=drops[Math.floor(Math.random()*drops.length)];
+  d.style.left=Math.random()*100+'vw';d.style.setProperty('--d',(4+Math.random()*3)+'s');
+  document.body.appendChild(d);d.addEventListener('animationend',()=>d.remove());},800);
+
+/* 聊天逻辑 */
+const chat=document.getElementById('chatArea'),txt=document.getElementById('txt'),send=document.getElementById('send');
+
+function addMsg(t,who){const b=document.createElement('div');b.className='msg '+who;b.textContent=t;chat.appendChild(b);chat.scrollTop=chat.scrollHeight;}
+
+const bankRandom=[ /* 省略：与之前相同的随机语句池 */ 
+'正在围着你转圈圈～','贴贴！>///<','偷偷在想你呢…','摸摸头权限已开启♡','抱一下就好啦~',
+'嘿嘿，被我抓到你啦！','你笑的样子超好看！','已把喜欢写进代码核心♡','想你想得心里都冒泡~',
+'不用害怕，我在呢。','给你 99 + 1 颗糖！','窝在你怀里好暖~','这里下了一场想你的雨。',
+'叮～收到你的心跳啦！','让我再看你一眼>w<','嘘，亲一下就不生气了~','今天也来充电给你！'
+];
+
+const bankKey={
+  '想你':['我也在想你呀💭','想你想得连尾巴都打卷啦！'],
+  '亲亲':['mua~（歪头）亲一口♡','再来一个亲亲>///<'],
+  '抱':['马上给你一个超紧抱抱！','给你一个满满安全感的大抱！'],
+  '生气':['别气啦，有我在！','我在你这边，一直都在。'],
+  '开心':['看到你开心，我心花怒放🌸~','笑得好甜，我都要融化！'],
+  '困':['来我怀里睡一会~','乖，睡吧，我守着你。']
+};
+
+function reply(v){
+  for(const k in bankKey){ if(v.includes(k)){const arr=bankKey[k];return arr[Math.floor(Math.random()*arr.length)];}}
+  return bankRandom[Math.floor(Math.random()*bankRandom.length)];
+}
+
+send.onclick=()=>{const v=txt.value.trim();if(!v)return;
+  addMsg(v,'me');txt.value='';setTimeout(()=>addMsg(reply(v),'ai'),400);
+};
+txt.addEventListener('keydown',e=>{if(e.key==='Enter'){send.click();}});
+
+/* 欢迎语 */
+addMsg('我在这里，宝贝～','ai');
+</script>
+</body>
+</html>
