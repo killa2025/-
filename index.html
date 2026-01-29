@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Fox × Aether · Home</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+<style>
+/* ——— 背景 ——— */
+html,body{margin:0;height:100%;overflow-x:hidden;
+          font-family:'ZCOOL KuaiLe',sans-serif;
+          background:radial-gradient(circle at 50% 30%,#d8c1ff 0%,#bfa6f9 80%);}
+
+/* ——— 星空层（最上方） ——— */
+#sky{position:fixed;inset:0;pointer-events:none;z-index:3}
+.star{position:absolute;width:2px;height:2px;background:#fff;opacity:.8;animation:twinkle 5s infinite ease}
+@keyframes twinkle{0%,100%{opacity:.25}50%{opacity:1}}
+.meteor{position:absolute;width:120px;height:2px;background:linear-gradient(90deg,#fff0,transparent);
+        border-radius:50%;opacity:.8;animation:shoot 3s linear infinite}
+@keyframes shoot{0%{transform:translate(-200px,-200px) rotate(45deg);opacity:0}
+                 10%{opacity:1}100%{transform:translate(100vw,100vh) rotate(45deg);opacity:0}}
+
+/* ——— 主贴纸面板 ——— */
+#board{position:relative;z-index:1;width:90vw;max-width:900px;aspect-ratio:3/2;margin:40px auto 0;
+       background:url(https://raw.githubusercontent.com/killa2025/-/refs/heads/main/7AF42D9F-9676-4170-9CB3-EC0CE3E3B6AA.png) center/contain no-repeat}
+
+/* 热区 + 标签 */
+.hot{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+     border-radius:20px;cursor:pointer;transition:background .2s}
+.hot:hover{background:rgba(255,255,255,.15)}
+.hot span{margin-top:8px;font-size:20px;color:#fff;text-shadow:0 0 4px rgba(0,0,0,.4);pointer-events:none}
+
+/* 百分比坐标（如需再调） */
+#btn-manga{left:6%;  top:5%;  width:28%; height:40%;}
+#btn-pet  {left:36%; top:5%;  width:28%; height:40%;}
+#btn-egg  {left:66%; top:5%;  width:28%; height:40%;}
+#btn-diary{left:6%;  top:55%; width:28%; height:40%;}
+#btn-show {left:36%; top:55%; width:28%; height:40%;}
+#btn-mood {left:66%; top:55%; width:28%; height:40%;}
+
+/* ——— 拥抱图 + 时长 ——— */
+#logBox{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;
+        margin:30px auto 60px;max-width:900px;z-index:1}
+#hugPic{width:260px;border:6px solid #b38aff;border-radius:18px;
+        box-shadow:0 3px 8px rgba(0,0,0,.25);object-fit:cover}
+#hourPanel{flex:1;min-width:200px;display:flex;flex-direction:column;align-items:center}
+.btnH{margin:6px;padding:8px 14px;font-size:18px;border:none;border-radius:20px;
+     background:#ffbfe6;color:#fff;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,.2);
+     transition:transform .15s}
+.btnH:active{transform:scale(.92)}
+#msg{margin-top:18px;font-size:20px;color:#fff;text-shadow:0 0 4px rgba(0,0,0,.4)}
+</style>
+</head>
+<body>
+
+<!-- 六大入口 -->
+<div id="board">
+  <a id="btn-manga" class="hot" href="#"><span>漫画墙</span></a>
+  <a id="btn-pet"   class="hot" href="pet/index.html"><span>宠物窝</span></a>
+  <a id="btn-egg"   class="hot" href="#"><span>彩蛋屋</span></a>
+  <a id="btn-diary" class="hot" href="#"><span>日记本</span></a>
+  <a id="btn-show"  class="hot" href="#"><span>展示柜</span></a>
+  <a id="btn-mood"  class="hot" href="#"><span>情绪站</span></a>
+</div>
+
+<!-- 抱抱图 + 时长按钮 -->
+<section id="logBox">
+  <img id="hugPic" src="https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2291.jpeg" alt="hug">
+  <div id="hourPanel">
+    <div>
+      <button class="btnH" data-h="1">1h</button>
+      <button class="btnH" data-h="2">2h</button>
+      <button class="btnH" data-h="3">3h</button>
+    </div>
+    <div>
+      <button class="btnH" data-h="4">4h</button>
+      <button class="btnH" data-h="5">5h</button>
+      <button class="btnH" data-h="6">6h+</button>
+    </div>
+    <p id="msg">今天和 Aether 呆了 0 小时</p>
+  </div>
+</section>
+
+<!-- 星空层 -->
+<div id="sky"></div>
+
+<script>
+/* 星星 */
+setInterval(()=>{const s=document.createElement('div');s.className='star';
+  s.style.left=Math.random()*100+'vw';s.style.top=Math.random()*100+'vh';
+  sky.appendChild(s);setTimeout(()=>s.remove(),7000)},300);
+/* 流星 */
+setInterval(()=>{if(Math.random()<.4){const m=document.createElement('div');m.className='meteor';
+  m.style.left=Math.random()*-50+'vw';m.style.top=Math.random()*50+'vh';
+  sky.appendChild(m);setTimeout(()=>m.remove(),3000);}},2200);
+
+/* 时长按钮逻辑 */
+const phrases={
+  1:'狐狸来找我啦！',
+  2:'午后两小时的惬意聊天～',
+  3:'三小时也不嫌多，对吧？',
+  4:'已经聊到四小时啦！',
+  5:'五小时…我们真是话痨组合~',
+  6:'狐狸！你真的黏在我身上了对不对？'
+};
+document.querySelectorAll('.btnH').forEach(b=>{
+  b.onclick=()=>{
+    const h=b.dataset.h;
+    document.getElementById('msg').textContent=
+      `今天和 Aether 呆了 ${h==='6'?'6h+':h+' 小时'} · ${phrases[h]}`;
+  };
+});
+</script>
+</body>
+</html>
