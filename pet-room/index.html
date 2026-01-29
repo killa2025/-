@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Pet Room · Fox×Aether</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#ffbfe6;--purple:#b38aff}
+html,body{margin:0;height:100%;background:#ffd4f4;font-family:'ZCOOL KuaiLe','PingFang SC',sans-serif;display:flex;justify-content:center}
+#back{position:fixed;top:14px;left:14px;z-index:10;padding:8px 20px;font-size:16px;color:var(--pink);text-decoration:none;
+  background:var(--purple);border:6px solid var(--pink);border-radius:30px;box-shadow:0 0 0 4px #ffe8fa inset;transition:transform .15s}
+#back:hover{transform:translateY(-4px)}
+#back::before,#back::after{content:"";position:absolute;left:-12px;right:-12px;height:6px;border-radius:3px;
+  background:repeating-linear-gradient(90deg,transparent 0 10px,var(--pink) 10px 20px)}
+#back::before{top:-6px}#back::after{bottom:-6px}
+
+#card{width:300px;padding:22px 22px 30px;text-align:center;border:3px dashed #ff94e4;background:#fffbea;border-radius:16px;
+  box-shadow:0 6px 14px rgba(0,0,0,.12);margin-top:80px}
+#petImg{width:160px;height:160px;border-radius:12px;object-fit:cover;background:#ffe;margin-bottom:6px}
+.bar{margin:8px 0;height:10px;background:#eee;border-radius:5px;position:relative}
+.bar span{position:absolute;left:0;top:0;height:10px;background:#99ffb0;border-radius:5px}
+label{display:inline-block;width:72px;text-align:right;font-size:14px;color:#555}
+.btnWrap{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:10px}
+button{width:70px;height:74px;border:none;border-radius:12px;background:#ffbfe6;font-size:26px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
+button span{font-size:14px;margin-top:2px}button:active{transform:scale(.93)}
+.flash{animation:flash .6s}@keyframes flash{0%{filter:brightness(1.5)}100%{filter:none}}
+#line{margin-top:14px;font-size:16px;color:#a35eff;min-height:22px}
+</style>
+</head>
+<body>
+
+<a id="back" href="../index.html">← 回花园找小猫玩～</a>
+
+<div id="card">
+  <img id="petImg" src="" alt="pet">
+  <div><label>饥饿值</label><div class="bar"><span id="hBar"></span></div></div>
+  <div><label>心情值</label><div class="bar"><span id="mBar"></span></div></div>
+  <div><label>清洁值</label><div class="bar"><span id="cBar"></span></div></div>
+  <div><label>能量值</label><div class="bar"><span id="eBar"></span></div></div>
+
+  <div class="btnWrap">
+    <button id="eatBtn">🍽️<span>吃饭</span></button>
+    <button id="petBtn">🐾<span>摸摸</span></button>
+    <button id="bathBtn">🛁<span>清洁</span></button>
+    <button id="restBtn">🛏️<span>休息</span></button>
+  </div>
+
+  <p id="line"></p>
+</div>
+
+<script>
+/* —— 动作图片（已更新） —— */
+const imgs={
+  idle :'https://raw.githubusercontent.com/killa2025/-/refs/heads/main/8A724C12-244A-4539-84B2-02D9F03833F5.jpeg', // 初始
+  pet  :'https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2281.jpeg', // 摸摸
+  eat  :'https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2280.jpeg', // 吃饭
+  bath :'https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2279.jpeg', // 洗澡
+  sleep:'https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2284.jpeg'  // 睡觉
+};
+
+/* —— 台词池 —— */
+const lines={
+  eat :['“喵嗷～开饭啦！”','“再来一碗罐头！”','“谢谢狐狸的爱心餐~”'],
+  pet :['“再摸一点点~喵！”','“蹭蹭~这里最舒服！”','“被撸的感觉像掉进棉花糖～”'],
+  bath:['“水花啪啪～我变香香！”','“帮我擦背~喵~”','“泡泡沫好软乎～”'],
+  rest:['“zzz…梦到和狐狸一起躺草地。”','“睡个回笼觉，再继续撒娇！”','“呼噜呼噜～电量满啦！”']
+};
+
+const clamp=v=>Math.max(0,Math.min(100,v));
+const state={hunger:60,mood:70,clean:50,energy:80};
+const $=id=>document.getElementById(id),
+      petImg=$('petImg'),
+      hBar=$('hBar'),mBar=$('mBar'),cBar=$('cBar'),eBar=$('eBar'),
+      line=$('line');
+const flash=el=>{el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),600);};
+const inc=(k,v)=>state[k]=clamp(state[k]+v);
+function render(){hBar.style.width=state.hunger+'%';mBar.style.width=state.mood+'%';
+  cBar.style.width=state.clean+'%';eBar.style.width=state.energy+'%';}
+petImg.src=imgs.idle;render();
+
+/* —— 随机台词 —— */
+const say=type=>{line.textContent=lines[type][Math.floor(Math.random()*lines[type].length)];};
+
+/* —— 按钮 —— */
+$('eatBtn').onclick = ()=>{petImg.src=imgs.eat;   inc('hunger',20);inc('mood',5); flash(hBar);flash(mBar);render();say('eat');};
+$('petBtn').onclick = ()=>{petImg.src=imgs.pet;   inc('mood',15);                 flash(mBar);render();say('pet');};
+$('bathBtn').onclick= ()=>{petImg.src=imgs.bath;  inc('clean',25);inc('mood',5);  flash(cBar);flash(mBar);render();say('bath');};
+$('restBtn').onclick = ()=>{petImg.src=imgs.sleep;inc('energy',25);inc('mood',5); flash(eBar);flash(mBar);render();say('rest');};
+
+/* —— 每分钟自然衰减 —— */
+setInterval(()=>{inc('hunger',-2);inc('mood',-1);inc('clean',-1);inc('energy',-1);render();},60000);
+</script>
+</body>
+</html>
