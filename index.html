@@ -47,12 +47,7 @@ html,body{margin:0;height:100%;overflow-x:hidden;
 .hot{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
   border-radius:20px;cursor:pointer;transition:background .2s}
 .hot:hover{background:rgba(255,255,255,.15)}
-.hot span{
-  margin-top:8px;font-size:20px;color:#fff;text-shadow:0 0 4px rgba(0,0,0,.4);
-  /* 新增 ↓↓↓ */
-  -webkit-text-stroke: 2px #5a2ca0;   /* 紫色描边，Safari/Chrome */
-  text-shadow:0 0 4px rgba(0,0,0,.6); /* 更浓的阴影 */
-}
+.hot span{margin-top:8px;font-size:20px;color:#fff;text-shadow:0 0 4px rgba(0,0,0,.4);pointer-events:none}
 #btn-manga{left:6%;  top:5%;  width:28%; height:40%;}
 #btn-pet  {left:36%; top:5%;  width:28%; height:40%;}
 #btn-egg  {left:66%; top:5%;  width:28%; height:40%;}
