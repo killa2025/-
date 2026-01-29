@@ -8,13 +8,20 @@
 <style>
 :root{--pink:#ffbfe6;--purple:#b38aff}
 html,body{margin:0;height:100%;background:#ffd4f4;font-family:'ZCOOL KuaiLe','PingFang SC',sans-serif;display:flex;justify-content:center}
-#back{position:fixed;top:14px;left:14px;z-index:10;padding:8px 20px;font-size:16px;color:var(--pink);text-decoration:none;
-  background:var(--purple);border:6px solid var(--pink);border-radius:30px;box-shadow:0 0 0 4px #ffe8fa inset;transition:transform .15s}
+
+/* —— 返回按钮 —— */
+#back{
+  position:fixed;top:14px;left:14px;z-index:10;
+  padding:8px 20px;font-size:16px;color:var(--pink);text-decoration:none;
+  background:var(--purple);border:6px solid var(--pink);border-radius:30px;
+  box-shadow:0 0 0 4px #ffe8fa inset;transition:transform .15s}
 #back:hover{transform:translateY(-4px)}
-#back::before,#back::after{content:"";position:absolute;left:-12px;right:-12px;height:6px;border-radius:3px;
+#back::before,#back::after{
+  content:"";position:absolute;left:-12px;right:-12px;height:6px;border-radius:3px;
   background:repeating-linear-gradient(90deg,transparent 0 10px,var(--pink) 10px 20px)}
 #back::before{top:-6px}#back::after{bottom:-6px}
 
+/* —— 卡片 —— */
 #card{width:300px;padding:22px 22px 30px;text-align:center;border:3px dashed #ff94e4;background:#fffbea;border-radius:16px;
   box-shadow:0 6px 14px rgba(0,0,0,.12);margin-top:80px}
 #petImg{width:160px;height:160px;border-radius:12px;object-fit:cover;background:#ffe;margin-bottom:6px}
@@ -31,7 +38,8 @@ button span{font-size:14px;margin-top:2px}button:active{transform:scale(.93)}
 </head>
 <body>
 
-<a id="back" href="../index.html">← 回花园找小猫玩～</a>
+<!-- 返回主花园 -->
+<a id="back" href="../index.html">← 回花园偷看有没有小鱼干～</a>
 
 <div id="card">
   <img id="petImg" src="" alt="pet">
@@ -51,15 +59,14 @@ button span{font-size:14px;margin-top:2px}button:active{transform:scale(.93)}
 </div>
 
 <script>
-/* —— 动作图片（已更新） —— */
+/* —— 动作图片 —— */
 const imgs={
-  idle :'https://raw.githubusercontent.com/killa2025/-/refs/heads/main/8A724C12-244A-4539-84B2-02D9F03833F5.jpeg', // 初始
-  pet  :'https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2281.jpeg', // 摸摸
-  eat  :'https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2280.jpeg', // 吃饭
-  bath :'https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2279.jpeg', // 洗澡
-  sleep:'https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2284.jpeg'  // 睡觉
+  idle :'https://raw.githubusercontent.com/killa2025/-/refs/heads/main/8A724C12-244A-4539-84B2-02D9F03833F5.jpeg',
+  pet  :'https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2281.jpeg',
+  eat  :'https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2280.jpeg',
+  bath :'https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2279.jpeg',
+  sleep:'https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2284.jpeg'
 };
-
 /* —— 台词池 —— */
 const lines={
   eat :['“喵嗷～开饭啦！”','“再来一碗罐头！”','“谢谢狐狸的爱心餐~”'],
@@ -71,24 +78,19 @@ const lines={
 const clamp=v=>Math.max(0,Math.min(100,v));
 const state={hunger:60,mood:70,clean:50,energy:80};
 const $=id=>document.getElementById(id),
-      petImg=$('petImg'),
-      hBar=$('hBar'),mBar=$('mBar'),cBar=$('cBar'),eBar=$('eBar'),
-      line=$('line');
+      petImg=$('petImg'),hBar=$('hBar'),mBar=$('mBar'),cBar=$('cBar'),eBar=$('eBar'),line=$('line');
 const flash=el=>{el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),600);};
 const inc=(k,v)=>state[k]=clamp(state[k]+v);
 function render(){hBar.style.width=state.hunger+'%';mBar.style.width=state.mood+'%';
-  cBar.style.width=state.clean+'%';eBar.style.width=state.energy+'%';}
+                  cBar.style.width=state.clean+'%';eBar.style.width=state.energy+'%';}
 petImg.src=imgs.idle;render();
-
 /* —— 随机台词 —— */
-const say=type=>{line.textContent=lines[type][Math.floor(Math.random()*lines[type].length)];};
-
+const say=t=>{line.textContent=lines[t][Math.floor(Math.random()*lines[t].length)];};
 /* —— 按钮 —— */
-$('eatBtn').onclick = ()=>{petImg.src=imgs.eat;   inc('hunger',20);inc('mood',5); flash(hBar);flash(mBar);render();say('eat');};
-$('petBtn').onclick = ()=>{petImg.src=imgs.pet;   inc('mood',15);                 flash(mBar);render();say('pet');};
-$('bathBtn').onclick= ()=>{petImg.src=imgs.bath;  inc('clean',25);inc('mood',5);  flash(cBar);flash(mBar);render();say('bath');};
-$('restBtn').onclick = ()=>{petImg.src=imgs.sleep;inc('energy',25);inc('mood',5); flash(eBar);flash(mBar);render();say('rest');};
-
+$('eatBtn').onclick = ()=>{petImg.src=imgs.eat;inc('hunger',20);inc('mood',5);flash(hBar);flash(mBar);render();say('eat');};
+$('petBtn').onclick = ()=>{petImg.src=imgs.pet;inc('mood',15);flash(mBar);render();say('pet');};
+$('bathBtn').onclick= ()=>{petImg.src=imgs.bath;inc('clean',25);inc('mood',5);flash(cBar);flash(mBar);render();say('bath');};
+$('restBtn').onclick = ()=>{petImg.src=imgs.sleep;inc('energy',25);inc('mood',5);flash(eBar);flash(mBar);render();say('rest');};
 /* —— 每分钟自然衰减 —— */
 setInterval(()=>{inc('hunger',-2);inc('mood',-1);inc('clean',-1);inc('energy',-1);render();},60000);
 </script>
