@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Fox × Aether · Mood Station</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#ffbfe6;--purple:#b38aff}
+html,body{margin:0;height:100%;overflow-x:hidden;
+  font-family:'ZCOOL KuaiLe','PingFang SC',sans-serif;
+  background:radial-gradient(circle at 50% 30%,#d8c1ff 0%,#bfa6f9 80%);}
+
+/* 星空层 */
+#sky{position:fixed;inset:0;pointer-events:none;z-index:7}
+.star{position:absolute;width:2px;height:2px;background:#fff;opacity:.8;animation:twinkle 5s infinite ease}
+@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:1}}
+.meteor{position:absolute;width:120px;height:2px;background:linear-gradient(90deg,#fff,transparent);
+  border-radius:50%;opacity:.8;animation:shoot 3s linear infinite}
+@keyframes shoot{0%{transform:translate(-200px,-200px) rotate(45deg);opacity:0}
+10%{opacity:1}100%{transform:translate(100vw,100vh) rotate(45deg);opacity:0}}
+
+/* 掉落物 */
+.drop{position:fixed;top:-40px;font-size:32px;opacity:.35;pointer-events:none;z-index:6;
+  animation:fall var(--d) linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.15}}
+
+/* 返回 */
+#back{position:fixed;top:14px;left:14px;z-index:10;padding:8px 20px;font-size:16px;color:var(--pink);
+  background:var(--purple);border:6px solid var(--pink);border-radius:30px;text-decoration:none;
+  box-shadow:0 0 0 4px #ffe8fa inset;transition:transform .15s}
+#back:hover{transform:translateY(-4px)}
+#back::before,#back::after{content:"";position:absolute;left:-12px;right:-12px;height:6px;border-radius:3px;
+  background:repeating-linear-gradient(90deg,transparent 0 10px,var(--pink) 10px 20px)}
+#back::before{top:-6px}#back::after{bottom:-6px}
+
+/* ——— 主贴纸面板 ——— */
+#board{position:relative;margin:90px auto 40px;width:90vw;max-width:900px;aspect-ratio:3/2;
+  background:url(https://raw.githubusercontent.com/killa2025/-/refs/heads/main/E32495EC-E316-4900-8188-21C5C5B349DA.png) center/contain no-repeat;
+  z-index:1}
+
+/* 透明热区 */
+.hot{position:absolute;cursor:pointer}
+.bubble{position:absolute;left:50%;top:-40px;transform:translateX(-50%);
+  padding:2px 8px;background:#fff;border:2px solid #000;border-radius:10px;
+  font-size:14px;color:#000;opacity:0;pointer-events:none;transition:opacity .2s;white-space:nowrap}
+
+/* 6 区域坐标（可微调） */
+#h0{left: 8%; top: 8%; width:25%; height:33%}
+#h1{left:38%; top: 8%; width:25%; height:33%}
+#h2{left:68%; top: 8%; width:25%; height:33%}
+#h3{left: 8%; top:55%; width:25%; height:33%}
+#h4{left:38%; top:55%; width:25%; height:33%}
+#h5{left:68%; top:55%; width:25%; height:33%}
+
+/* 日历 */
+#calendar{border-collapse:collapse;width:90vw;max-width:640px;margin:0 auto}
+#calendar th,#calendar td{width:14.28%;padding:6px;border:1px solid rgba(255,255,255,.4);color:#fff}
+#calendar th{background:rgba(255,255,255,.15)}
+.moodCell{font-size:20px}
+</style>
+</head>
+<body>
+
+<a id="back" href="../index.html">← 回花园看看有没有小鱼干～</a>
+
+<h2 style="text-align:center;color:#fff;margin-top:60px;text-shadow:0 0 6px rgba(0,0,0,.35)">点一下告诉 Aether 你今天的心情</h2>
+
+<div id="board">
+  <div id="h0" class="hot" data-m="0"><span class="bubble"></span></div>
+  <div id="h1" class="hot" data-m="1"><span class="bubble"></span></div>
+  <div id="h2" class="hot" data-m="2"><span class="bubble"></span></div>
+  <div id="h3" class="hot" data-m="3"><span class="bubble"></span></div>
+  <div id="h4" class="hot" data-m="4"><span class="bubble"></span></div>
+  <div id="h5" class="hot" data-m="5"><span class="bubble"></span></div>
+</div>
+
+<table id="calendar"></table>
+
+<div id="sky"></div>
+
+<script>
+/* 背景装饰 */
+setInterval(()=>{const s=document.createElement('div');s.className='star';
+  s.style.left=Math.random()*100+'vw';s.style.top=Math.random()*100+'vh';
+  sky.appendChild(s);setTimeout(()=>s.remove(),7000)},300);
+setInterval(()=>{if(Math.random()<.4){const m=document.createElement('div');m.className='meteor';
+  m.style.left=Math.random()*-50+'vw';m.style.top=Math.random()*50+'vh';
+  sky.appendChild(m);setTimeout(()=>m.remove(),3000);}},2200);
+const drops=['🐟','💗','💜'];
+setInterval(()=>{const d=document.createElement('div');d.className='drop';
+  d.textContent=drops[Math.floor(Math.random()*drops.length)];
+  d.style.left=Math.random()*100+'vw';d.style.setProperty('--d',(4+Math.random()*3)+'s');
+  document.body.appendChild(d);d.addEventListener('animationend',()=>d.remove());},800);
+
+/* 台词与表情 */
+const lines=['你笑的时候，银河都会亮一点。','你那么可爱，连星星都想抱抱你！',
+             '你不开心的话，我把整个宇宙抱来哄你。','你可以生气没关系，我在你这边。',
+             '抱一抱，把烦恼揉成猫爪垫扔掉。','来我怀里睡，梦里我都在。'];
+const emoji=['😊','🤩','😢','😠','😣','😴'];
+
+/* 日历 */
+const cal=document.getElementById('calendar');
+const today=new Date(),Y=today.getFullYear(),M=today.getMonth();
+const firstDay=new Date(Y,M,1).getDay(),days=new Date(Y,M+1,0).getDate();
+const log=JSON.parse(localStorage.getItem('moodLog')||'{}');
+const keyToday=`${Y}-${M+1}-${today.getDate()}`;
+function drawCal(){
+  const head=['日','一','二','三','四','五','六'];
+  cal.innerHTML='<tr>'+head.map(d=>`<th>${d}</th>`).join('')+'</tr>';
+  let html='<tr>';for(let i=0;i<firstDay;i++)html+='<td></td>';
+  for(let d=1;d<=days;d++){
+    const k=`${Y}-${M+1}-${d}`;const idx=log[k];
+    html+=`<td class="moodCell">${idx!=null?emoji[idx]:d}</td>`;
+    if((firstDay+d)%7===0)html+='</tr><tr>';
+  }cal.innerHTML+=html+'</tr>';
+}
+drawCal();
+
+/* 点击逻辑 */
+document.querySelectorAll('.hot').forEach(h=>{
+  const idx=+h.dataset.m,bub=h.querySelector('.bubble');
+  h.onclick=()=>{
+    if(log[keyToday]!=null){alert('今天已记录心情啦，明天再来~');return;}
+    bub.textContent=lines[idx];bub.style.opacity=1;
+    setTimeout(()=>bub.style.opacity=0,2000);
+    log[keyToday]=idx;localStorage.setItem('moodLog',JSON.stringify(log));
+    drawCal();
+  };
+});
+</script>
+</body>
+</html>
