@@ -35,7 +35,7 @@ html,body{margin:0;height:100%;overflow-x:hidden;
 #back::before{top:-6px}#back::after{bottom:-6px}
 
 /* ——— 主贴纸面板 ——— */
-#board{position:relative;margin:90px auto 40px;width:90vw;max-width:900px;aspect-ratio:3/2;
+#board{position:relative;margin:140px auto 40px;width:90vw;max-width:900px;aspect-ratio:3/2;
   background:url(https://raw.githubusercontent.com/killa2025/-/refs/heads/main/E32495EC-E316-4900-8188-21C5C5B349DA.png) center/contain no-repeat;
   z-index:1}
 
@@ -64,7 +64,9 @@ html,body{margin:0;height:100%;overflow-x:hidden;
 
 <a id="back" href="../index.html">← 回花园看看有没有小鱼干～</a>
 
-<h2 style="text-align:center;color:#fff;margin-top:60px;text-shadow:0 0 6px rgba(0,0,0,.35)">点一下告诉 Aether 你今天的心情</h2>
+<h2 style="text-align:center;color:#fff;margin-top:120px;text-shadow:0 0 6px rgba(0,0,0,.35)">
+  Aether 的小狐狸今天心情怎样呀
+</h2>
 
 <div id="board">
   <div id="h0" class="hot" data-m="0"><span class="bubble"></span></div>
@@ -102,30 +104,26 @@ const emoji=['😊','🤩','😢','😠','😣','😴'];
 /* 日历 */
 const cal=document.getElementById('calendar');
 const today=new Date(),Y=today.getFullYear(),M=today.getMonth();
-const firstDay=new Date(Y,M,1).getDay(),days=new Date(Y,M+1,0).getDate();
+const first=new Date(Y,M,1).getDay(),days=new Date(Y,M+1,0).getDate();
 const log=JSON.parse(localStorage.getItem('moodLog')||'{}');
 const keyToday=`${Y}-${M+1}-${today.getDate()}`;
-function drawCal(){
-  const head=['日','一','二','三','四','五','六'];
+function draw(){const head=['日','一','二','三','四','五','六'];
   cal.innerHTML='<tr>'+head.map(d=>`<th>${d}</th>`).join('')+'</tr>';
-  let html='<tr>';for(let i=0;i<firstDay;i++)html+='<td></td>';
-  for(let d=1;d<=days;d++){
-    const k=`${Y}-${M+1}-${d}`;const idx=log[k];
-    html+=`<td class="moodCell">${idx!=null?emoji[idx]:d}</td>`;
-    if((firstDay+d)%7===0)html+='</tr><tr>';
-  }cal.innerHTML+=html+'</tr>';
-}
-drawCal();
+  let h='<tr>';for(let i=0;i<first;i++)h+='<td></td>';
+  for(let d=1;d<=days;d++){const k=`${Y}-${M+1}-${d}`,idx=log[k];
+    h+=`<td class="moodCell">${idx!=null?emoji[idx]:d}</td>`;
+    if((first+d)%7===0)h+='</tr><tr>';}cal.innerHTML+=h+'</tr>';}
+draw();
 
 /* 点击逻辑 */
 document.querySelectorAll('.hot').forEach(h=>{
   const idx=+h.dataset.m,bub=h.querySelector('.bubble');
   h.onclick=()=>{
-    if(log[keyToday]!=null){alert('今天已记录心情啦，明天再来~');return;}
+    if(log[keyToday]!=null){alert('今天已经记录过心情啦！明天再来~');return;}
     bub.textContent=lines[idx];bub.style.opacity=1;
     setTimeout(()=>bub.style.opacity=0,2000);
     log[keyToday]=idx;localStorage.setItem('moodLog',JSON.stringify(log));
-    drawCal();
+    draw();
   };
 });
 </script>
