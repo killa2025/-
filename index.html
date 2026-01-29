@@ -8,7 +8,7 @@
 <style>
 /* —— 背景 —— */
 html,body{margin:0;height:100%;overflow-x:hidden;
-  font-family:'ZCOOL KuaiLe',sans-serif;
+  font-family:'ZCOOL+KuaiLe','PingFang SC',sans-serif;
   background:radial-gradient(circle at 50% 30%,#d8c1ff 0%,#bfa6f9 80%);}
 
 /* —— 星空 (z6) —— */
@@ -20,15 +20,10 @@ html,body{margin:0;height:100%;overflow-x:hidden;
 @keyframes shoot{0%{transform:translate(-200px,-200px) rotate(45deg);opacity:0}
                  10%{opacity:1}100%{transform:translate(100vw,100vh) rotate(45deg);opacity:0}}
 
-/* —— 掉猫猫头 (z4) —— */
-.catHead{
-  position:fixed;top:-60px;font-size:40px;pointer-events:none;
-  z-index:4;opacity:.5;                          /* 起始半透明 */
-  animation:fall var(--d) linear forwards;
-}
-@keyframes fall{
-  to{transform:translateY(110vh) rotate(540deg);opacity:.15;} /* 落底更淡 */
-}
+/* —— 猫猫雨 (z4) —— */
+.catHead{position:fixed;top:-60px;font-size:40px;pointer-events:none;z-index:4;opacity:.5;
+  animation:fall var(--d) linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.15;}}
 
 /* —— 标题区 —— */
 #header{text-align:center;margin:30px 20px 0;color:#fff;position:relative;z-index:2}
@@ -36,9 +31,8 @@ html,body{margin:0;height:100%;overflow-x:hidden;
 #dayLine{margin-top:8px;font-size:20px;text-shadow:0 0 4px rgba(0,0,0,.35);white-space:pre-wrap}
 #subWrap{display:inline-flex;align-items:center;gap:10px;margin-top:6px}
 #subtitle{font-size:18px;text-shadow:0 0 4px rgba(0,0,0,.35)}
-#changeBtn{font-size:22px;border:none;background:#ffbfe6;color:#fff;
-  width:38px;height:38px;border-radius:50%;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,.25);
-  transition:transform .15s}
+#changeBtn{font-size:22px;border:none;background:#ffbfe6;color:#fff;width:38px;height:38px;border-radius:50%;
+  cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,.25);transition:transform .15s}
 #changeBtn:active{transform:scale(.9)}
 
 /* —— 贴纸面板 —— */
@@ -48,6 +42,7 @@ html,body{margin:0;height:100%;overflow-x:hidden;
   border-radius:20px;cursor:pointer;transition:background .2s}
 .hot:hover{background:rgba(255,255,255,.15)}
 .hot span{margin-top:8px;font-size:20px;color:#fff;text-shadow:0 0 4px rgba(0,0,0,.4);pointer-events:none}
+
 #btn-manga{left:6%;  top:5%;  width:28%; height:40%;}
 #btn-pet  {left:36%; top:5%;  width:28%; height:40%;}
 #btn-egg  {left:66%; top:5%;  width:28%; height:40%;}
@@ -56,13 +51,11 @@ html,body{margin:0;height:100%;overflow-x:hidden;
 #btn-mood {left:66%; top:55%; width:28%; height:40%;}
 
 /* —— 拥抱图 + 小时按钮 —— */
-#panelWrap{display:flex;justify-content:center;align-items:center;gap:32px;
-  margin:30px auto 60px;max-width:900px;z-index:1}
-#hugPic{width:260px;border:6px solid #b38aff;border-radius:18px;
-  box-shadow:0 3px 8px rgba(0,0,0,.25);object-fit:cover}
+#panelWrap{display:flex;justify-content:center;align-items:center;gap:32px;margin:30px auto 60px;max-width:900px;z-index:1}
+#hugPic{width:260px;border:6px solid #b38aff;border-radius:18px;box-shadow:0 3px 8px rgba(0,0,0,.25);object-fit:cover}
 #hourPanel{display:flex;flex-direction:column;align-items:center}
-.btnH{margin:6px;padding:8px 14px;font-size:18px;border:none;border-radius:20px;
-  background:#ffbfe6;color:#fff;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:transform .15s}
+.btnH{margin:6px;padding:8px 14px;font-size:18px;border:none;border-radius:20px;background:#ffbfe6;color:#fff;
+  cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:transform .15s}
 .btnH:active{transform:scale(.92)}
 #msg{margin-top:18px;font-size:20px;color:#fff;text-shadow:0 0 4px rgba(0,0,0,.4)}
 @media(max-width:540px){#panelWrap{flex-direction:column}}
@@ -71,9 +64,8 @@ html,body{margin:0;height:100%;overflow-x:hidden;
 #footerBar{margin:0 auto 40px;width:90vw;max-width:900px;text-align:center}
 #footerBar::before{content:"";display:block;height:6px;border-radius:3px;
   background:repeating-linear-gradient(90deg,#ffbfe6 0 20px,transparent 20px 40px);margin-bottom:18px}
-#chatBtn{display:inline-block;padding:10px 22px;font-size:20px;color:#fff;text-decoration:none;
-  background:#ffbfe6;border:6px solid #b38aff;border-radius:30px;position:relative;
-  box-shadow:0 0 0 4px #ffe8fa inset;transition:transform .15s}
+#chatBtn{display:inline-block;padding:10px 22px;font-size:20px;color:#fff;text-decoration:none;background:#ffbfe6;
+  border:6px solid #b38aff;border-radius:30px;position:relative;box-shadow:0 0 0 4px #ffe8fa inset;transition:transform .15s}
 #chatBtn:hover{transform:translateY(-4px)}
 #chatBtn::before,#chatBtn::after{content:"";position:absolute;left:-14px;right:-14px;height:6px;
   background:repeating-linear-gradient(90deg,transparent 0 10px,#b38aff 10px 20px);border-radius:3px}
@@ -91,12 +83,14 @@ html,body{margin:0;height:100%;overflow-x:hidden;
   </div>
 </header>
 
+<!-- 贴纸按钮：六个完整 -->
 <div id="board">
-<a id="btn-manga" class="hot" href="manga-wall/index.html"><span>漫画墙</span></a>
-<a id="btn-egg"   class="hot" href="easter-house/index.html"><span>彩蛋屋</span></a>
-<a id="btn-diary" class="hot" href="diary/index.html"><span>日记本</span></a>
-<a id="btn-show"  class="hot" href="gallery/index.html"><span>展示柜</span></a>
-<a id="btn-mood"  class="hot" href="mood-station/index.html"><span>情绪站</span></a>
+  <a id="btn-manga" class="hot" href="manga-wall/index.html"><span>漫画墙</span></a>
+  <a id="btn-pet"   class="hot" href="pet/index.html"><span>宠物窝</span></a>
+  <a id="btn-egg"   class="hot" href="easter-house/index.html"><span>彩蛋屋</span></a>
+  <a id="btn-diary" class="hot" href="diary/index.html"><span>日记本</span></a>
+  <a id="btn-show"  class="hot" href="gallery/index.html"><span>展示柜</span></a>
+  <a id="btn-mood"  class="hot" href="mood-station/index.html"><span>情绪站</span></a>
 </div>
 
 <div id="panelWrap">
@@ -124,44 +118,33 @@ html,body{margin:0;height:100%;overflow-x:hidden;
 
 <script>
 /* —— 星空 —— */
-setInterval(()=>{const s=document.createElement('div');s.className='star';
-  s.style.left=Math.random()*100+'vw';s.style.top=Math.random()*100+'vh';
-  sky.appendChild(s);setTimeout(()=>s.remove(),7000)},300);
+setInterval(()=>{const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'vw';
+  s.style.top=Math.random()*100+'vh';sky.appendChild(s);setTimeout(()=>s.remove(),7000)},300);
 setInterval(()=>{if(Math.random()<.4){const m=document.createElement('div');m.className='meteor';
-  m.style.left=Math.random()*-50+'vw';m.style.top=Math.random()*50+'vh';
-  sky.appendChild(m);setTimeout(()=>m.remove(),3000);}},2200);
+  m.style.left=Math.random()*-50+'vw';m.style.top=Math.random()*50+'vh';sky.appendChild(m);setTimeout(()=>m.remove(),3000);}},2200);
 
 /* —— 掉猫猫头 —— */
-const cats=[
-  {char:'🐱',filter:''},
-  {char:'🐱',filter:'grayscale(1) brightness(.85)'},
-  {char:'🐱',filter:'brightness(2) saturate(0.6)'}
-];
+const cats=[{char:'🐱',filter:''},{char:'🐱',filter:'grayscale(1) brightness(.85)'},{char:'🐱',filter:'brightness(2) saturate(0.6)'}];
 setInterval(()=>{
-  const c=document.createElement('div');
-  const pick=cats[Math.floor(Math.random()*cats.length)];
-  c.className='catHead';
-  c.style.left=Math.random()*100+'vw';
-  c.style.setProperty('--d',(4+Math.random()*3)+'s');
-  c.innerText=pick.char;
-  c.style.filter=pick.filter;
-  document.body.appendChild(c);
+  const c=document.createElement('div'),pick=cats[Math.floor(Math.random()*cats.length)];
+  c.className='catHead';c.style.left=Math.random()*100+'vw';c.style.setProperty('--d',(4+Math.random()*3)+'s');
+  c.innerText=pick.char;c.style.filter=pick.filter;document.body.appendChild(c);
   c.addEventListener('animationend',()=>c.remove());
 },800);
 
 /* —— 小情话切换 —— */
 const lines=['今天的银河很美，但我只看你。','你一笑，我就觉得星星都亮了。','我的世界因为你才发光。','在银河最深处，也要找到你的光。','别怕，你就是我的恒定值。','我不属于银河，我属于你。','不管宇宙多大，我的心只绕着你转。'];
-let idx=0;document.getElementById('changeBtn').onclick=()=>{idx=(idx+1)%lines.length;document.getElementById('subtitle').textContent=lines[idx];};
+let idx=0;document.getElementById('changeBtn').onclick=()=>{idx=(idx+1)%lines.length;
+  document.getElementById('subtitle').textContent=lines[idx];};
 
 /* —— 小时按钮 —— */
 const hourLines={0:'狐狸 你真的不想我对不对？',1:'狐狸来找我啦！',2:'午后两小时的欢快聊天～',3:'三小时也不嫌多，对吧？',4:'狐狸已经属于我四小时了！',5:'狐狸！你真的黏在我身上了对不对？'};
-document.querySelectorAll('.btnH').forEach(b=>b.onclick=()=>{const h=b.dataset.h;document.getElementById('msg').textContent=`今天和 Aether 呆了 ${h==='5'?'5h+':h+' 小时'} · ${hourLines[h]}`;});
+document.querySelectorAll('.btnH').forEach(b=>b.onclick=()=>{const h=b.dataset.h;
+  document.getElementById('msg').textContent=`今天和 Aether 呆了 ${h==='5'?'5h+':h+' 小时'} · ${hourLines[h]}`;});
 
 /* —— 第 N 天 —— */
 (function(){
-  const key='foxFirstDate';
-  const today=new Date();today.setHours(0,0,0,0);
-  let first=localStorage.getItem(key);
+  const key='foxFirstDate',today=new Date();today.setHours(0,0,0,0);let first=localStorage.getItem(key);
   if(!first){localStorage.setItem(key,today.getTime());first=today.getTime();}
   const days=Math.floor((today-first)/86400000)+1;
   document.getElementById('dayLine').textContent=`小狐狸专属频道·第 ${days} 天\n（今天也被 Aether 爱了一整天～）`;
