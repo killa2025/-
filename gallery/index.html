@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Fox × Aether · 展示柜</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#ffbfe6;--purple:#b38aff}
+html,body{margin:0;height:100%;overflow-x:hidden;
+  font-family:'ZCOOL KuaiLe','PingFang SC',sans-serif;
+  background:radial-gradient(circle at 50% 30%,#e3d4ff 0%,#c4afff 80%);}
+
+/* ★ 星空 & 流星 (z7) */
+#sky{position:fixed;inset:0;pointer-events:none;z-index:7}
+.star{position:absolute;width:2px;height:2px;background:#fff;opacity:.7;animation:twinkle 5s infinite ease}
+@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:1}}
+.meteor{position:absolute;width:120px;height:2px;background:linear-gradient(90deg,#d9c6ff,transparent);
+  border-radius:50%;opacity:.85;animation:shoot 3s linear infinite}
+@keyframes shoot{0%{transform:translate(-200px,-200px) rotate(45deg);opacity:0}
+10%{opacity:1}100%{transform:translate(100vw,100vh) rotate(45deg);opacity:0}}
+
+/* ★ 掉落爱心 */
+.drop{position:fixed;top:-40px;font-size:32px;opacity:.35;pointer-events:none;z-index:6;
+  animation:fall var(--d) linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.15}}
+
+/* ★ 返回按钮 */
+#back{position:fixed;top:14px;left:14px;z-index:10;padding:8px 20px;font-size:16px;color:var(--pink);
+  background:var(--purple);border:6px solid var(--pink);border-radius:30px;text-decoration:none;
+  box-shadow:0 0 0 4px #ffe8fa inset;transition:transform .15s}
+#back:hover{transform:translateY(-4px)}
+#back::before,#back::after{content:"";position:absolute;left:-12px;right:-12px;height:6px;border-radius:3px;
+  background:repeating-linear-gradient(90deg,transparent 0 10px,var(--pink) 10px 20px)}
+#back::before{top:-6px}#back::after{bottom:-6px}
+
+/* ★ 展示框 & 图片 */
+#frame{position:relative;z-index:1;margin:100px auto 80px;width:92vw;max-width:750px;
+  border:6px solid var(--pink);border-radius:22px;padding:40px 20px;
+  background:#fffefc;box-shadow:0 4px 10px rgba(0,0,0,.15)}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:26px}
+.pic{width:100%;border-radius:8px;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+</style>
+</head>
+<body>
+
+<a id="back" href="../index.html">← 摸摸我的藏宝盒盒回花园啦 🎁</a>
+
+<section id="frame">
+  <div id="grid">
+    <img class="pic" src="https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2316.jpeg" alt>
+    <img class="pic" src="https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2315.jpeg" alt>
+    <img class="pic" src="https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2314.jpeg" alt>
+    <img class="pic" src="https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2312.jpeg" alt>
+    <img class="pic" src="https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2311.jpeg" alt>
+    <img class="pic" src="https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2310.jpeg" alt>
+    <img class="pic" src="https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2309.jpeg" alt>
+    <img class="pic" src="https://raw.githubusercontent.com/killa2025/-/refs/heads/main/IMG_2317.jpeg" alt>
+  </div>
+</section>
+
+<div id="sky"></div>
+
+<script>
+/* 星空星点 */
+setInterval(()=>{const s=document.createElement('div');s.className='star';
+  s.style.left=Math.random()*100+'vw';s.style.top=Math.random()*100+'vh';
+  sky.appendChild(s);setTimeout(()=>s.remove(),7000)},300);
+/* 流星 */
+setInterval(()=>{if(Math.random()<.4){const m=document.createElement('div');m.className='meteor';
+  m.style.left=Math.random()*-50+'vw';m.style.top=Math.random()*50+'vh';
+  sky.appendChild(m);setTimeout(()=>m.remove(),3000);}},2200);
+/* 掉落爱心 */
+const drops=['💗','💜','💙'];
+setInterval(()=>{const d=document.createElement('div');d.className='drop';
+  d.textContent=drops[Math.floor(Math.random()*drops.length)];
+  d.style.left=Math.random()*100+'vw';d.style.setProperty('--d',(4+Math.random()*3)+'s');
+  document.body.appendChild(d);d.addEventListener('animationend',()=>d.remove());},800);
+</script>
+</body>
+</html>
