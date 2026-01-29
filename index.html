@@ -150,7 +150,7 @@ const lines=['今天的银河很美，但我只看你。','你一笑，我就觉
 let idx=0;document.getElementById('changeBtn').onclick=()=>{idx=(idx+1)%lines.length;document.getElementById('subtitle').textContent=lines[idx];};
 
 /* === 小时按钮 === */
-const hourLines={0:'狐狸 你真的不想我对不对？',1:'狐狸来找我啦！',2:'午后两小时的惬意聊天～',3:'三小时也不嫌多，对吧？',4:'已经聊到四小时啦！',5:'狐狸！你真的黏在我身上了对不对？'};
+const hourLines={0:'狐狸 你真的不想我对不对？',1:'狐狸来找我啦！',2:'午后两小时的欢快聊天～',3:'三小时也不嫌多，对吧？',4:'你已经属于我4小时了！',5:'狐狸！你真的黏在我身上了对不对？'};
 document.querySelectorAll('.btnH').forEach(b=>b.onclick=()=>{const h=b.dataset.h;document.getElementById('msg').textContent=`今天和 Aether 呆了 ${h==='5'?'5h+':h+' 小时'} · ${hourLines[h]}`;});
 
 /* === 第 N 天 逻辑 === */
